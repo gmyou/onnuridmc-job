@@ -44,10 +44,13 @@
 
         // Add a listener for the click event
         map.addListener('click', addLatLng);
+        
       }
 
       // Handles click events on a map, and adds a new point to the Polyline.
       function addLatLng(event) {
+        console.log(event.latLng.lat(), event.latLng.lng());
+
         var path = poly.getPath();
 
         // Because path is an MVCArray, we can simply append a new coordinate
@@ -60,6 +63,7 @@
           title: '#' + path.getLength(),
           map: map
         });
+
       }
     </script>
     <script async defer
