@@ -13,3 +13,6 @@ echo "<pre>";
 print_r( ${cursor} );
 echo "</pre>";
 ```
+## Ubuntu + Windows Multi Booting
+* [Universal USB Installer](https://www.pendrivelinux.com/universal-usb-installer-easy-as-1-2-3/)
+* [WindowsDualBoot](https://help.ubuntu.com/community/WindowsDualBoot)
