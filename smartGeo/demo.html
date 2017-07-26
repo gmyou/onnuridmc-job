@@ -1,103 +1,69 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Create a polyline using Geolocation and Google Maps API</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script>
-        // If the browser supports the Geolocation API
-        if (typeof navigator.geolocation == "undefined") {
-          $("#error").text("Your browser doesn't support the Geolocation API");
-          return;
-        }
-        // Save the positions' history
-        var path = [];
-
-        navigator.geolocation.watchPosition(function(position) {
-          // Save the current position
-          path.push(new google.maps.LatLng(position.coords.latitude, position.coords.longitude));
-
-          // Create the map
-          var myOptions = {
-            zoom : 16,
-            center : path[0],
-            mapTypeId : google.maps.MapTypeId.ROADMAP
-          }
-          var map = new google.maps.Map(document.getElementById("map"), myOptions);
-
-          /*
-          Uncomment this block if you want to set a path
-
-          // Create the polyline's points
-          for(var i = 0; i < 5; i++) {
-            // Create a random point using the user current position and a random generated number.
-            // The number will be once positive and once negative using based on the parity of i
-            // and to reduce the range the number is divided by 10
-            path.push(
-              new google.maps.LatLng(
-                position.coords.latitude + (Math.random() / 10 * ((i % 2) ? 1 : -1)),
-                position.coords.longitude + (Math.random() / 10 * ((i % 2) ? 1 : -1))
-              )
-            );
-          }
-          */
-
-          // Create the array that will be used to fit the view to the points range and
-          // place the markers to the polyline's points
-          var latLngBounds = new google.maps.LatLngBounds();
-          for(var i = 0; i < path.length; i++) {
-            latLngBounds.extend(path[i]);
-            // Place the marker
-            new google.maps.Marker({
-              map: map,
-              position: path[i],
-              title: "Point " + (i + 1)
-            });
-          }
-          // Creates the polyline object
-          var polyline = new google.maps.Polyline({
-            map: map,
-            path: path,
-            strokeColor: '#0000FF',
-            strokeOpacity: 0.7,
-            strokeWeight: 1
-          });
-          // Fit the bounds of the generated points
-          map.fitBounds(latLngBounds);
-        },
-        function(positionError){
-          $("#error").append("Error: " + positionError.message + "<br />");
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10 * 1000 // 10 seconds
-        });
-      });
-    </script>
-    <style type="text/css">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Complex Polylines</title>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
       #map {
-        width: 500px;
-        height: 400px;
-        margin-top: 10px;
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
       }
     </style>
   </head>
   <body>
-    <h1>Create a polyline</h1>
     <div id="map"></div>
     <script>
+
+      // This example creates an interactive map which constructs a polyline based on
+      // user clicks. Note that the polyline only appears once its path property
+      // contains two LatLng coordinates.
+
+      var poly;
       var map;
+
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
+          zoom: 7,
+          center: {lat: 41.879, lng: -87.624}  // Center the map on Chicago, USA.
+        });
+
+        poly = new google.maps.Polyline({
+          strokeColor: '#000000',
+          strokeOpacity: 1.0,
+          strokeWeight: 3
+        });
+        poly.setMap(map);
+
+        // Add a listener for the click event
+        map.addListener('click', addLatLng);
+      }
+
+      // Handles click events on a map, and adds a new point to the Polyline.
+      function addLatLng(event) {
+        var path = poly.getPath();
+
+        // Because path is an MVCArray, we can simply append a new coordinate
+        // and it will automatically appear.
+        path.push(event.latLng);
+
+        // Add a new marker at the new plotted point on the polyline.
+        var marker = new google.maps.Marker({
+          position: event.latLng,
+          title: '#' + path.getLength(),
+          map: map
         });
       }
     </script>
-    
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbis3NB8XV_42xrY1tH21ogcFcFbVs0UA&callback=initMap"
-  type="text/javascript"></script>
-
-    <p id="error"></p>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAbis3NB8XV_42xrY1tH21ogcFcFbVs0UA&callback=initMap">
+    </script>
   </body>
 </html>
