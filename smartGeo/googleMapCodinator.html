@@ -78,16 +78,20 @@ a:hover {
 <script>
 //var myPolygon;
 function initialize() {
-  // Map Center
-  const POSITION = {lat:33.5190755, lng:-111.9253654};
-  const POLYGON = [
-    "33.53625,-111.92674",
-    "33.51049,-111.96279",
-    "33.49632,-111.93996",
-    "33.50047,-111.90271"
-    ];
+    // Map Center
+    const LAT = 33.5190755
+    const LNG = -111.9253654;
+    const POLYGON = [
+        "33.53625,-111.92674",
+        "33.51049,-111.96279",
+        "33.49632,-111.93996",
+        "33.50047,-111.90271"
+        ];
 
-  var myLatLng = new google.maps.LatLng(POSITION.lat, POSITION.lng);
+    var jsonStr = JSON.stringify(POLYGON, null, 2);
+    document.getElementById('info').innerHTML = jsonStr;
+
+  var myLatLng = new google.maps.LatLng(LAT, LNG);
   // General Options
   var mapOptions = {
     zoom: 12,
