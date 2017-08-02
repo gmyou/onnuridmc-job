@@ -12,8 +12,8 @@ log4j.appender.console.target=System.err
 log4j.appender.console.layout=org.apache.log4j.PatternLayout
 log4j.appender.console.layout.ConversionPattern=%d{yy/MM/dd HH:mm:ss} %p %c{1}: %m%n
 log4j.appender.console.file=SPARK_HOME/your_log_file.log
-$ ./start-master.sh
-$ ./spark-shell --master spark://OnnuriDMCui-MacBook-Pro.local:7077
+$ $SPARK_HOME./sbin/start-master.sh
+$ $SPARK_HOME./bin/spark-shell --master spark://OnnuriDMCui-MacBook-Pro.local:7077
 ```
 
 ## 확인
